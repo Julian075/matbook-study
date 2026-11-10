@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Material Perception Study</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Consent / welcome -->
+<section id="s-welcome" class="screen card">
+  <h1>Material perception study</h1>
+  <p>Thank you for taking part. On each screen you will see a <b>reference sphere</b>
+     in the middle, showing a material, and <b>two 3D objects</b> on the left and right.
+     Choose the object whose material looks most like the reference.</p>
+  <p>The study has about 100 short trials and takes roughly <b>8–10 minutes</b>.
+     Please do it in one go, on a computer, in a quiet place.</p>
+  <p>Your answers are anonymous. We only store the ID you enter, your answers, response
+     times, and basic information about your screen and browser. You can stop at any time
+     by closing the page.</p>
+  <p id="contact" class="muted"></p>
+  <p id="narrow-warning" class="warn" hidden>Your screen looks small. A laptop or desktop
+     screen is strongly recommended so the images are large enough.</p>
+  <div id="resume-box" hidden class="resume">
+    <p>You have an unfinished session on this device.</p>
+    <button id="btn-resume">Resume where I stopped</button>
+    <button id="btn-restart" class="secondary">Start over</button>
+  </div>
+  <label class="check"><input type="checkbox" id="consent"> I agree to take part in this study.</label>
+  <button id="btn-consent" disabled>Continue</button>
+</section>
+
+<!-- Participant info -->
+<section id="s-info" class="screen card" hidden>
+  <h2>About you</h2>
+  <label>Your initials or the ID you were given *
+    <input id="pid" type="text" maxlength="40" autocomplete="off" required></label>
+  <label>Age range
+    <select id="age">
+      <option value="">Prefer not to say</option>
+      <option>18-24</option><option>25-34</option><option>35-44</option>
+      <option>45-54</option><option>55-64</option><option>65+</option>
+    </select></label>
+  <label>Do you have normal (or corrected-to-normal) colour vision?
+    <select id="vision">
+      <option value="">Prefer not to say</option>
+      <option value="normal">Yes, normal</option>
+      <option value="deficient">No / colour blind</option>
+      <option value="unsure">Not sure</option>
+    </select></label>
+  <label>Experience with computer graphics / 3D / materials
+    <select id="expertise">
+      <option value="">Prefer not to say</option>
+      <option value="none">None</option>
+      <option value="some">Some</option>
+      <option value="expert">Expert (work or research in the field)</option>
+    </select></label>
+  <button id="btn-info" disabled>Continue</button>
+</section>
+
+<!-- Instructions + preloading -->
+<section id="s-instr" class="screen card" hidden>
+  <h2>Instructions</h2>
+  <ol>
+    <li>The <b>middle image</b> is a sphere showing the target material. The text at the top
+        describes it.</li>
+    <li>Choose the object, <b>left or right</b>, whose material looks <b>most like the
+        reference</b>. Judge only the material (colour, pattern, texture, shininess),
+        not the shape.</li>
+    <li>Answer with the <kbd>&larr;</kbd> / <kbd>&rarr;</kbd> arrow keys, or click or tap
+        the image. There are no right or wrong answers; go with your first impression.
+        Each choice is final, so you can't go back.</li>
+  </ol>
+  <p id="practice-note">You will start with <span id="n-practice"></span> practice trials.</p>
+  <div class="loader"><div id="load-bar"></div></div>
+  <p id="load-text" class="muted">Loading images…</p>
+  <label class="check"><input type="checkbox" id="fs" checked> Use full screen (recommended)</label>
+  <button id="btn-start" disabled>Start</button>
+</section>
+
+<!-- Between practice and main -->
+<section id="s-ready" class="screen card" hidden>
+  <h2>Practice done</h2>
+  <p>The real study starts now. It has <b><span id="n-main"></span> trials</b>, with a
+     progress bar at the bottom.</p>
+  <button id="btn-main">Start the study</button>
+</section>
+
+<!-- Trial screen -->
+<section id="s-trial" class="screen trial" hidden>
+  <div class="prompt">
+    <div id="t-question" class="question"></div>
+    <div id="t-prompt" class="material"></div>
+  </div>
+  <div class="stimuli" id="stimuli">
+    <figure class="option" id="opt-left">
+      <img id="img-left" alt="left option" draggable="false">
+      <figcaption>&larr; left</figcaption>
+    </figure>
+    <figure class="reference">
+      <img id="img-ref" alt="reference material" draggable="false">
+      <figcaption>reference</figcaption>
+    </figure>
+    <figure class="option" id="opt-right">
+      <img id="img-right" alt="right option" draggable="false">
+      <figcaption>right &rarr;</figcaption>
+    </figure>
+  </div>
+  <div class="progress"><div id="progress-bar"></div></div>
+  <div id="phase-tag" class="phase-tag"></div>
+</section>
+
+<!-- End -->
+<section id="s-end" class="screen card" hidden>
+  <h2>Thank you!</h2>
+  <label>Any comments? (optional)
+    <textarea id="comments" rows="3" maxlength="1000"></textarea></label>
+  <button id="btn-submit">Submit results</button>
+  <p id="upload-status" class="muted"></p>
+  <div id="download-box" hidden>
+    <p>If submitting failed, please download your results and send the file to the
+       researchers:</p>
+    <button id="btn-download" class="secondary">Download my results (CSV)</button>
+  </div>
+</section>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
