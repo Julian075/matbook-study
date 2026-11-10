@@ -34,29 +34,9 @@
 
 <!-- Participant info -->
 <section id="s-info" class="screen card" hidden>
-  <h2>About you</h2>
+  <h2>Your ID</h2>
   <label>Your initials or the ID you were given *
     <input id="pid" type="text" maxlength="40" autocomplete="off" required></label>
-  <label>Age range
-    <select id="age">
-      <option value="">Prefer not to say</option>
-      <option>18-24</option><option>25-34</option><option>35-44</option>
-      <option>45-54</option><option>55-64</option><option>65+</option>
-    </select></label>
-  <label>Do you have normal (or corrected-to-normal) colour vision?
-    <select id="vision">
-      <option value="">Prefer not to say</option>
-      <option value="normal">Yes, normal</option>
-      <option value="deficient">No / colour blind</option>
-      <option value="unsure">Not sure</option>
-    </select></label>
-  <label>Experience with computer graphics / 3D / materials
-    <select id="expertise">
-      <option value="">Prefer not to say</option>
-      <option value="none">None</option>
-      <option value="some">Some</option>
-      <option value="expert">Expert (work or research in the field)</option>
-    </select></label>
   <button id="btn-info" disabled>Continue</button>
 </section>
 
@@ -115,9 +95,7 @@
 <!-- End -->
 <section id="s-end" class="screen card" hidden>
   <h2>Thank you!</h2>
-  <label>Any comments? (optional)
-    <textarea id="comments" rows="3" maxlength="1000"></textarea></label>
-  <button id="btn-submit">Submit results</button>
+  <button id="btn-submit" hidden>Try again</button>
   <p id="upload-status" class="muted"></p>
   <div id="download-box" hidden>
     <p>If submitting failed, please download your results and send the file to the

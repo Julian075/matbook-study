@@ -164,6 +164,7 @@
       S.phase = "end"; S.finished_at = new Date().toISOString(); save();
       exitFullscreen();
       show("s-end");
+      upload();
     }
   }
 
@@ -173,7 +174,6 @@
     const catches = main.filter((r) => r.is_catch === 1);
     return {
       study_id: CFG.STUDY_ID, session_id: S.session_id, participant: S.participant,
-      age: S.info.age, vision: S.info.vision, expertise: S.info.expertise,
       started_at: S.started_at, finished_at: S.finished_at || "",
       duration_s: S.finished_at ? Math.round((new Date(S.finished_at) - new Date(S.started_at)) / 1000) : "",
       n_main_trials: main.length,
@@ -183,22 +183,19 @@
       user_agent: navigator.userAgent, language: navigator.language,
       timezone: (Intl.DateTimeFormat().resolvedOptions().timeZone || ""),
       resumed: S.resumed || 0,
-      comments: S.comments || "",
     };
   }
 
   async function upload() {
     const status = $("upload-status");
     const btn = $("btn-submit");
-    S.comments = $("comments").value.trim();
-    save();
     if (!CFG.ENDPOINT_URL) {
       status.textContent = "Online saving is not configured. Please download your results.";
       $("download-box").hidden = false;
       return;
     }
-    btn.disabled = true;
-    status.textContent = "Sending…";
+    btn.hidden = true;
+    status.textContent = "Saving your results…";
     const body = JSON.stringify({ session: sessionRecord(), rows: S.responses });
     try {
       const r = await fetch(CFG.ENDPOINT_URL, { method: "POST", body });
@@ -218,14 +215,13 @@
         status.textContent = "Could not send the results (" + e.message + ").";
       }
       $("download-box").hidden = false;
-      btn.disabled = false;
-      btn.textContent = "Try again";
+      btn.hidden = false;
     }
   }
 
   function downloadCSV() {
     const ses = sessionRecord();
-    const extra = ["age", "vision", "expertise", "screen", "dpr", "user_agent", "comments"];
+    const extra = ["screen", "dpr", "user_agent"];
     const rows = S.responses.map((r) => { const o = { ...r }; extra.forEach((k) => (o[k] = ses[k])); return o; });
     const cols = Object.keys(rows[0] || {});
     const esc = (v) => { const s = String(v ?? ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
@@ -268,7 +264,7 @@
     save();
     if (S.phase === "info") return show("s-info");
     if (S.phase === "instr") { show("s-instr"); return startPreload(); }
-    if (S.phase === "end") return show("s-end");
+    if (S.phase === "end") { show("s-end"); return upload(); }
     preloadAll(() => {}).then(() => {
       if (S.phase === "ready") { $("n-main").textContent = S.main.length; show("s-ready"); }
       else { show("s-trial"); runTrial(); }
@@ -291,7 +287,7 @@
     $("pid").oninput = (e) => ($("btn-info").disabled = !e.target.value.trim());
     $("btn-info").onclick = () => {
       S.participant = $("pid").value.trim();
-      S.info = { age: $("age").value, vision: $("vision").value, expertise: $("expertise").value };
+      S.info = {};
       S.phase = "instr"; save();
       show("s-instr");
       startPreload();
